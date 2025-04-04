@@ -1,0 +1,85 @@
+<div class="flex items-center justify-between bg-gray-800 p-4">
+  <button onclick="history.back()" class="text-black bg-gray-600 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+    ← Back
+  </button>
+  <h1 class="text-2xl font-semibold text-center text-black">
+    Chat with <%= @chat_room.receiver == current_user ? @chat_room.sender.u_name : @chat_room.receiver.u_name %>
+  </h1>
+  <div></div> <!-- Empty div for spacing -->
+</div>
+
+<!-- Chat Messages Container -->
+<div id="messages" class="p-4 h-[500px] overflow-y-auto bg-gray-100 rounded-md shadow-md">
+  <% @messages.each do |message| %>
+    <div class="mb-2 p-4 m-2 rounded-lg <%=
+      message.user == current_user ? 'bg-blue-500 text-white ml-auto' : 'bg-gray-300 text-black mr-auto'
+    %> max-w-xs">
+      <p class="text-sm font-semibold"><%= message.user.u_name %></p>
+      <p class="text-base"><%= message.content %></p>
+    </div>
+  <% end %>
+</div>
+
+<!-- Message Input Form -->
+<div class="fixed bottom-0 w-full bg-white p-4 shadow-md flex items-center">
+  <form id="message-form" class="flex w-full space-x-2">
+    <input type="text" id="message-input"
+      class="flex-1 p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+      placeholder="Type a message..." required>
+    <button type="submit"
+      class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">
+      Send
+    </button>
+  </form>
+</div>
+
+<script type="module">
+  import consumer from "/assets/channels/consumer.js"; 
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const chatRoomId = "<%= @chat_room.id %>";
+    const messagesDiv = document.getElementById("messages");
+    const messageForm = document.getElementById("message-form");
+    const messageInput = document.getElementById("message-input");
+
+    // Subscribe to ActionCable Channel
+    consumer.subscriptions.create(
+      { channel: "PrivateChatChannel", chat_room_id: chatRoomId },
+      {
+        received(data) {
+          const messageHtml = `
+            <div class="mb-2 p-2 rounded-lg ${
+              data.sender === "<%= current_user.u_name %>"
+                ? 'bg-blue-500 text-white ml-auto'
+                : 'bg-gray-300 text-black mr-auto'
+            } max-w-xs">
+              <p class="text-sm font-semibold">${data.sender}</p>
+              <p class="text-base">${data.content}</p>
+            </div>`;
+          
+          messagesDiv.innerHTML += messageHtml;
+          messagesDiv.scrollTop = messagesDiv.scrollHeight; // Auto-scroll to latest message
+        }
+      }
+    );
+
+    // Handle form submission with AJAX
+    messageForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const message = messageInput.value.trim();
+
+      if (!message) return;
+
+      fetch(`/chat_rooms/${chatRoomId}/messages`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({ message: { content: message } })
+      });
+
+      messageInput.value = ""; // Clear input field after sending
+    });
+  });
+</script>
