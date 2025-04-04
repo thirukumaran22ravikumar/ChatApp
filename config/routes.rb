@@ -3,9 +3,16 @@ Rails.application.routes.draw do
   devise_for :users
   resources :homes
   resources :chat_rooms, only:[:index, :show] do
-    resources :messages, only: [:create]
+    resources :messages, only: [:create,:show]
 
   end
+
+  resources :group_rooms, only:[:show] do
+    
+
+  end
+  # resources :group_chat_massages, only: [:create]
+  resources :group_chat_messages, only: [:create]
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

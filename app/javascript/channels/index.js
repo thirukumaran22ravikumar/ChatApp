@@ -2,4 +2,4 @@
 import "channels/private_chat_channel"
 import consumer from "./consumer";
 import "./private_chat_channel";
-console.log("ActionCable channels initialized!");
+import "channels/group_chat_channel"
