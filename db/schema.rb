@@ -11,18 +11,18 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.1].define(version: 2025_04_04_054920) do
-  create_table "chat_rooms", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "sender_id", null: false
-    t.bigint "receiver_id", null: false
+  create_table "chat_rooms", force: :cascade do |t|
+    t.integer "sender_id", null: false
+    t.integer "receiver_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["receiver_id"], name: "index_chat_rooms_on_receiver_id"
     t.index ["sender_id"], name: "index_chat_rooms_on_sender_id"
   end
 
-  create_table "group_chat_messages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "group_chat_room_id", null: false
-    t.bigint "user_id"
+  create_table "group_chat_messages", force: :cascade do |t|
+    t.integer "group_chat_room_id", null: false
+    t.integer "user_id"
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -30,21 +30,21 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_04_054920) do
     t.index ["user_id"], name: "index_group_chat_messages_on_user_id"
   end
 
-  create_table "group_chat_rooms", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "group_chat_rooms", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "homes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "homes", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "messages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "chat_room_id", null: false
+  create_table "messages", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "chat_room_id", null: false
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -52,7 +52,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_04_054920) do
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
-  create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
