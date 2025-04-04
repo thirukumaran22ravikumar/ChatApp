@@ -1,7 +1,7 @@
 class PrivateChatChannel < ApplicationCable::Channel
   def subscribed
     # stream_from "some_channel"
-    console.log("---------------private subscribed")
+    
     chat_room = ChatRoom.find_by(id: params[:chat_room_id])
     stream_for chat_room if chat_room
   end
