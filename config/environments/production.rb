@@ -5,7 +5,7 @@ Rails.application.configure do
 
   # Code is not reloaded between requests.
   config.enable_reloading = false
-
+  REDIS_URL=rediss://default:AbTYAAIjcDE5NTg4MzcyNDg3YTc0ZDZhOWFlNDk1YzE2ZDA0YjM5MnAxMA@master-sloth-46296.upstash.io:6379
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both threaded web servers
   # and those relying on copy on write to perform better.
