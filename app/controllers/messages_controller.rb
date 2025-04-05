@@ -11,9 +11,5 @@ class MessagesController < ApplicationController
     head :ok
   end
 
-  def show
-    chat_room = GroupChatRoom.find(1)
-    message = chat_room.group_chat_messages.create(content: params[:message][:content]) # ✅ Fix here
-  end
   
 end

@@ -26,49 +26,49 @@
 
 
 
-# default: &default
-#   adapter: mysql2
-#   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-#   timeout: 5000
-#   username: root
-#   password: root
-
-# development:
-#   <<: *default
-#   database: chatApp
-
-# # Warning: The database defined as "test" will be erased and
-# # re-generated from your development database when you run "rake".
-# # Do not set this db to the same as development or production.
-# test:
-#   <<: *default
-#   database: chatApp
-#   username: root
-#   password: root
-
-# production:
-#   <<: *default
-#   database: chatApp
-#   username: root
-#   password: root
-
-
-
 default: &default
-  adapter: postgresql
-  encoding: unicode
-  pool: 5
+  adapter: mysql2
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+  username: root
+  password: root
 
 development:
   <<: *default
-  adapter: sqlite3
-  database: db/development.sqlite3
+  database: chatApp
 
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
 test:
   <<: *default
-  adapter: sqlite3
-  database: db/test.sqlite3
+  database: chatApp
+  username: root
+  password: root
 
 production:
   <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
+  database: chatApp
+  username: root
+  password: root
+
+
+
+# default: &default
+#   adapter: postgresql
+#   encoding: unicode
+#   pool: 5
+
+# development:
+#   <<: *default
+#   adapter: sqlite3
+#   database: db/development.sqlite3
+
+# test:
+#   <<: *default
+#   adapter: sqlite3
+#   database: db/test.sqlite3
+
+# production:
+#   <<: *default
+#   url: <%= ENV['DATABASE_URL'] %>
